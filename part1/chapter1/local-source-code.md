@@ -37,7 +37,7 @@ docker compose -f docker-compose.middleware.yaml up -d
 
 #### 安装基础环境
 
-服务器启动需要 Python 3.12。建议使用 [pyenv](https://github.com/pyenv/pyenv) 快速安装 Python 环境。
+服务器启动需要 Python 3.12。建议使用 [pyenv](https://github.com/pyenv/pyenv) 快速安装 Python 环境。windows 系统请使用 [pyenv-win](https://github.com/pyenv-win/pyenv-win)。
 
 要安装其他 Python 版本，请使用 `pyenv install`。
 
@@ -73,18 +73,23 @@ pyenv global 3.12
     ```
 4.  安装依赖包
 
-    Dify API 服务使用 [Poetry](https://python-poetry.org/docs/) 来管理依赖。
+    Dify API 服务使用 [Poetry](https://python-poetry.org/docs/) 来管理依赖。安装poetry: `pipx install poetry` , 如果没有pipx，可以参考[这里](https://pipx.pypa.io/stable/installation)。
+    
+    现在，你可以执行 `poetry shell` 来激活环境。  
 
     ```
     poetry env use 3.12
     poetry install
     ```
+    小插曲：在windows上安装 shell 时：安装shell插件最简单的方法是通过 poetry 的self add命令。`poetry self add poetry-plugin-shell`,如果你使用pipx安装 poetry ，你可以通过`pipx inject poetry poetry-plugin-shell`命令添加插件。否则，如果你使用pip安装 poetry ，你可以通过`pip install poetry-plugin-shell`命令添加插件包。
+
 
 5.  执行数据库迁移
 
     将数据库结构迁移至最新版本。
 
     ```
+    poetry shell
     poetry run flask db upgrade
     ```
 6.  启动 API 服务
